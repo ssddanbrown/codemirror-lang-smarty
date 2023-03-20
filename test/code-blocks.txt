@@ -1,0 +1,62 @@
+# Test simple code block definition
+
+{ extends "base" }
+
+==>
+
+Template(CodeBlock(CodeBlockAction, String))
+
+# Multi tag single liner
+
+{ set msg = "Result not found" }
+
+==>
+
+Template(CodeBlock(CodeBlockAction, Identifier, Operator, String))
+
+# Test conflicting case (in/include)
+
+{ include "empty.twig" if "in" in "include" }
+
+==>
+
+Template(CodeBlock(CodeBlockAction, String, CodeTag, String, Comparison, String))
+
+# Test code with nested smarty tag
+
+{ include "empty.twig" with "cat {$dog}" }
+
+==>
+
+Template(CodeBlock(CodeTag, String, CodeTag, String))
+
+# Test open and close block
+
+{if true }
+    <p>content</p>
+{/if}
+
+==>
+
+Template(
+    CodeBlock(CodeBlockAction, Boolean)
+    PlainText
+    CodeBlock(CodeBlockAction)
+)
+
+# Test complex open
+
+{foreach foo in bar if foo.baz is divisible by(3) }
+Hello
+{/foreach}
+
+==>
+
+Template(
+    CodeBlock(
+        CodeBlockAction, Identifier, Comparison, Identifier, CodeTag, ChainedIdentifier, Comparison, Identifier,
+        Function(Identifier, FunctionParamList(Number))
+    )
+    PlainText
+    CodeBlock(CodeBlockAction)
+)

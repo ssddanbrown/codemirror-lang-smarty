@@ -1,0 +1,82 @@
+@precedence {
+  toppest,
+  top,
+  mid,
+  lesser
+}
+
+@top Template { (CodeBlock | PlainText)* }
+
+@skip { space | BlockComment }
+
+
+CodeBlock { 
+  "{" CodeBlockAction? expression* "}"
+ }
+
+commaSep<content> { "" | content ("," content?)* }
+
+expression {
+  Function |
+  Identifier |
+  ChainedIdentifier |
+  Comparison |
+  Operator |
+  Math |
+  Array |
+  basicType
+}
+
+basicType {
+  String |
+  Boolean |
+  Number
+}
+
+functionParam {
+  Identifier |
+  basicType
+}
+
+FunctionParamList {
+  commaSep<functionParam>
+}
+
+Array {
+  "[" commaSep<functionParam> "]"
+}
+
+
+Function { funcOpen FunctionParamList ")"}
+
+@tokens {
+  PlainText { ![{] PlainText? }
+
+  CodeBlockAction { $[a-zA-Z]+ ![$(){}.] }
+  Identifier { $[a-zA-Z_\-$0-9]+ }
+  ChainedIdentifier { Identifier ("." Identifier)+ }
+  funcOpen {Identifier "("}
+
+  Operator { "=" | "." | "|" }
+  Math { "+" | "-" | "/" | "%" | "//" | "*" | "**"}
+  Comparison { "and" | "or" | "not" | "==" | "!=" | "<" | ">" | ">=" | "<=" | "starts with" | "ends with" | "matches" | "in" | "not" | "is" }
+
+  Boolean { "true" | "false" }
+  String { ("'" (![\\'] | "\\" _)* "'"?) | ("\"" (![\\"] | "\\" _)* "\""?) }
+  Number { '-'? int frac? }
+  int  { '0' | $[1-9] @digit* }
+  frac { '.' @digit+ }
+
+  @precedence { space, PlainText, Boolean, Number, Comparison, ChainedIdentifier, Operator, Math, Identifier, BlockComment, String }
+  @precedence { Boolean, Number, Comparison, funcOpen, CodeBlockAction, ChainedIdentifier, Identifier }
+
+  BlockComment { "{*" blockCommentRest }
+  blockCommentRest { ![*] blockCommentRest | "*" blockCommentAfterHash }
+  blockCommentAfterHash { "}" | "*" blockCommentAfterHash | ![}*] blockCommentRest }
+
+  space { $[ \t\n\r]+ }
+
+  "(" ")"
+}
+
+@detectDelim

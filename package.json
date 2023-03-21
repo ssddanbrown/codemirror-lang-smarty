@@ -2,6 +2,8 @@
   "name": "@ssddanbrown/codemirror-lang-smarty",
   "version": "1.0.0",
   "description": "Smarty language support for CodeMirror",
+  "repository": "github:ssddanbrown/codemirror-lang-smarty",
+  "homepage": "https://github.com/ssddanbrown/codemirror-lang-smarty",
   "scripts": {
     "test": "mocha test/test.js",
     "prepare": "rollup -c",

@@ -1,24 +1,25 @@
-# Twig Language CodeMirror 6
+# Smarty Language for CodeMirror 6
 
-This package aims to provide [Twig language](https://twig.symfony.com/) support to CodeMirror 6.
+This package aims to provide [Smarty Templating Engine language](https://www.smarty.net/docs/en/language.basic.syntax.tpl) support for CodeMirror 6.
 
-**Advisory:** This has really just been created as a way to get highlighting support, with a goal of achieving good-enough alignment with the old official CodeMirror 5 twig syntax support. This will likely have bugs, omissions and won't have the full CodeMirror functionality feature-set. The fact that I've got as far as I have, attempting to use this mind-melting arcane language building system, is a miracle enough.
+**Advisory:** This is simply a port of the old CodeMirror 5 mode code, with the primary intent of getting syntax highlighting, and therefore may not provide full CM6 language features. This also lacks the options that were possible with the CM5 implementation. I tried building this as a new Lezer Grammar language but gave up on that after a painful couple of days. 
 
 ### Usage
 
 To use this, simply install via NPM:
 
 ```
-npm install @ssddanbrown/codemirror-lang-twig
+npm install @ssddanbrown/codemirror-lang-smarty
 ```
 
 Then you can use it like so:
 
 ```javascript
-import { twig, twigLanguage } from "@ssddanbrown/codemirror-lang-twig"
+import { StreamLanguage } from "@codemirror/language"
+import { smarty } from "@ssddanbrown/codemirror-lang-twig"
 
-twig() // => https://codemirror.net/docs/ref/#language.LanguageSupport
-twigLanguage // => https://codemirror.net/docs/ref/#language.LRLanguage
+const smartyLanguage = StreamLanguage.define(smarty);
+// => https://codemirror.net/docs/ref/#language.StreamLanguage
 ```
 
 ### Development
@@ -28,9 +29,6 @@ The following commands can be used for development:
 ```bash
 # Prepare/Build the codebase
 npm run prepare
-
-# Test the codebase, must be prepared beforehand
-npm t
 ```
 
 ### Contribution
@@ -43,7 +41,7 @@ This is a low maintenance project. The scope of features and support are purpose
 
 ### Attribution
 
-This project uses the [CodeMirror language package template](https://github.com/codemirror/lang-example), and I've also used various other CodeMirror default language projects as general guidance.
+This project is an adaptation of the original [CodeMirror 5 smarty language mode](https://github.com/codemirror/codemirror5/blob/master/mode/smarty/smarty.js).
 
 Many thanks to [Marijn Haverbeke](https://github.com/marijnh) for their work in developing and providing CodeMirror and everything that supports it.
 
@@ -51,9 +49,6 @@ Many thanks to [Marijn Haverbeke](https://github.com/marijnh) for their work in 
 
 These are resources I've found useful in building this:
 
-- Simple JSON example: https://github.com/lezer-parser/json/blob/main/src/highlight.js
-- An underscore matches all chars (https://discuss.codemirror.net/t/match-for-all-characters/4230).
-- Guide: https://lezer.codemirror.net/docs/guide/
-- Smart Docs: https://www.smarty.net/docs/en/language.basic.syntax.tpl
-- Old smarty docs: https://github.com/codemirror/codemirror5/blob/master/mode/smarty/smarty.js
+- Smarty Docs: https://www.smarty.net/docs/en/language.basic.syntax.tpl
+- Old smarty mode: https://github.com/codemirror/codemirror5/blob/master/mode/smarty/smarty.js
 
